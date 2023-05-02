@@ -29,8 +29,6 @@ $mail->addAddress('tomy.edfi@gmail.com', 'Destinatario');
 $mail->Subject = 'Nuevo mensaje desde el formulario de contacto';
 $mail->Body = "Nombre: $nombre\nEmail: $email\nDescripción: $descripcion";
 
-php_value max_file_uploads 5
-
 if($mail->send()) {
   echo 'Mensaje enviado correctamente';
 } else {
