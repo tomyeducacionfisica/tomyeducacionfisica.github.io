@@ -1,37 +1,54 @@
 <?php
-require 'tomyeducacionfisica.github.io/PHPMailer.php';
-require 'tomyeducacionfisica.github.io/SMTP.php';
-require 'tomyeducacionfisica.github.io/Exception.php';
+// Carga las librerías de Google API para PHP
+require_once __DIR__ . '/vendor/autoload.php';
 
-$mail = new PHPMailer\PHPMailer\PHPMailer();
-$mail->isSMTP();
-$mail->Host = 'smtp.gmail.com';
-$mail->SMTPAuth = true;
-$mail->Username = 'tomy.edfi@gmail.com';
-$mail->Password = '2023classes';
-$mail->SMTPSecure = 'tls';
-$mail->Port = 587;
-$mail->setFrom('tomy.edfi@gmail.com', 'Tomy');
+// Configura las credenciales de API
+$client = new Google_Client();
+$client->setAuthConfig('credentials.json');
+$client->addScope(Google_Service_Drive::DRIVE_FILE);
 
-$nombre = $_POST['nombre'];
-$email = $_POST['email'];
-$descripcion = $_POST['descripcion'];
+// Inicia sesión en Google Drive
+$service = new Google_Service_Drive($client);
 
-if(isset($_FILES['archivos'])) {
-  $archivos = $_FILES['archivos'];
+// Crea una carpeta en Google Drive para guardar los archivos
+$nombreCarpeta = 'Archivos subidos desde mi sitio web';
+$carpeta = new Google_Service_Drive_DriveFile(array(
+    'name' => $nombreCarpeta,
+    'mimeType' => 'application/vnd.google-apps.folder'
+));
+$carpeta = $service->files->create($carpeta, array(
+    'fields' => 'id'
+));
+$destFolderUrl = 'https://drive.google.com/drive/folders/' . $carpeta->getId();
 
-  for($i = 0; $i < count($archivos['name']); $i++) {
-    $mail->addAttachment($archivos['tmp_name'][$i], $archivos['name'][$i]);
+// Sube los archivos a Google Drive
+foreach ($_FILES['archivos']['error'] as $key => $error) {
+  if ($error == UPLOAD_ERR_OK) {
+    $nombreArchivo = $_FILES['archivos']['name'][$key];
+    $archivo = file_get_contents($_FILES['archivos']['tmp_name'][$key]);
+    $contentType = $_FILES['archivos']['type'][$key];
+
+    $fileMetadata = new Google_Service_Drive_DriveFile();
+    $fileMetadata->setName($nombreArchivo);
+    $fileMetadata->setParents([$destFolderUrl]);
+    $file = $service->files->create($fileMetadata, array(
+        'data' => $archivo,
+        'mimeType' => $contentType,
+        'uploadType' => 'multipart',
+        'fields' => 'id'
+    ));
   }
 }
 
-$mail->addAddress('tomy.edfi@gmail.com', 'Destinatario');
-$mail->Subject = 'Nuevo mensaje desde el formulario de contacto';
-$mail->Body = "Nombre: $nombre\nEmail: $email\nDescripción: $descripcion";
+// Envía un correo electrónico al destinatario
+$destinatario = $_POST['correo'];
+$asunto = 'Archivos subidos';
+$mensaje = 'Se han subido los siguientes archivos a Google Drive: ' . implode(', ', $_FILES['archivos']['name']);
+$headers = 'From: ' . $_POST['nombre'] . ' <' . $_POST['correo'] . '>' . "\r\n";
+$headers .= 'Reply-To: ' . $_POST['correo'] . "\r\n";
+$headers .= 'X-Mailer: PHP/' . phpversion();
 
-if($mail->send()) {
-  echo 'Mensaje enviado correctamente';
-} else {
-  echo 'Error al enviar el mensaje: ' . $mail->ErrorInfo;
-}
-?>
+mail($destinatario, $asunto, $mensaje, $headers);
+
+// Redirige al usuario a una página de confirmación
+header('Location: confirmacion.html');
