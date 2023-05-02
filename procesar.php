@@ -1,7 +1,7 @@
 <?php
-require '/PHPMailer.php';
-require '/SMTP.php';
-require '/Exception.php';
+require 'tomyeducacionfisica.github.io/PHPMailer.php';
+require 'tomyeducacionfisica.github.io/SMTP.php';
+require 'tomyeducacionfisica.github.io/Exception.php';
 
 $mail = new PHPMailer\PHPMailer\PHPMailer();
 $mail->isSMTP();
