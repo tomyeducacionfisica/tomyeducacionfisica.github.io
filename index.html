@@ -80,21 +80,21 @@
         <p>Descripción de la imagen</p>
       </div>
     </div>
-   <form action="procesar.php" method="POST" enctype="multipart/form-data">
-     <input type="hidden" name="MAX_FILE_SIZE" value="5000000">
-    <label for="nombre">Nombre:</label>
-    <input type="text" name="nombre" id="nombre" required>
-    <br><br>
-    <label for="email">Email:</label>
-    <input type="email" name="email" id="email" required>
-    <br><br>
-    <label for="descripcion">Descripción:</label>
-    <textarea name="descripcion" id="descripcion" rows="5" required></textarea>
-    <br><br>
-    <label for="archivos">Archivos (máximo 5):</label>
-    <input type="file" name="archivos[]" id="archivos" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple>
-    <br><br>
-    <input type="submit" value="Enviar">
-  </form>
+   <form method="post" action="mailto:tomy.edfi@gmail.com" enctype="multipart/form-data">
+  <input type="hidden" name="destFolderUrl" value="https://drive.google.com/drive/folders/1ltWKMkeZmLXJu4LN5HFj-VShZn9InyN5?usp=share_link">
+  <label for="nombre">Nombre:</label>
+  <input type="text" name="nombre" id="nombre">
+  <br>
+  <label for="correo">Correo electrónico:</label>
+  <input type="email" name="correo" id="correo">
+  <br>
+  <label for="descripcion">Descripción:</label>
+  <textarea name="descripcion" id="descripcion"></textarea>
+  <br>
+  <label for="archivos">Archivos:</label>
+  <input type="file" name="archivos[]" multiple>
+  <br>
+  <input type="submit" value="Enviar">
+</form>
   </body>
 </html>
