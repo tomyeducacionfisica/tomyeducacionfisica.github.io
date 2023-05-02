@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mi Página</title>
+    <style>
+      /* Estilos para el encabezado */
+      header {
+        background-color: #f5f5f5;
+        padding: 20px;
+        text-align: center;
+      }
+      h1 {
+        font-size: 36px;
+        margin: 0;
+      }
+
+      /* Estilos para la imagen y la descripción */
+      .image-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+      .image-wrapper img {
+        max-width: 400px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+      }
+      .description {
+        max-width: 400px;
+        margin-bottom: 20px;
+      }
+
+      /* Estilos para el formulario */
+      form {
+        background-color: #f5f5f5;
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      input[type="text"],
+      input[type="email"],
+      textarea {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: none;
+      }
+      input[type="file"] {
+        margin-bottom: 20px;
+      }
+      input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Título de la Página</h1>
+    </header>
+    <div class="image-wrapper">
+      <img src="https://via.placeholder.com/400x300" alt="Imagen de ejemplo">
+      <div class="description">
+        <p>Descripción de la imagen</p>
+      </div>
+    </div>
+   <form action="procesar.php" method="POST" enctype="multipart/form-data">
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" id="nombre" required>
+    <br><br>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" required>
+    <br><br>
+    <label for="descripcion">Descripción:</label>
+    <textarea name="descripcion" id="descripcion" rows="5" required></textarea>
+    <br><br>
+    <label for="archivos">Archivos (máximo 5):</label>
+    <input type="file" name="archivos[]" id="archivos" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple>
+    <br><br>
+    <input type="submit" value="Enviar">
+  </form>
+  </body>
+</html>
