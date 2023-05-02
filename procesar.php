@@ -1,7 +1,7 @@
 <?php
-require 'PHPMailer/PHPMailer.php';
-require 'PHPMailer/SMTP.php';
-require 'PHPMailer/Exception.php';
+require '/PHPMailer.php';
+require '/SMTP.php';
+require '/Exception.php';
 
 $mail = new PHPMailer\PHPMailer\PHPMailer();
 $mail->isSMTP();
